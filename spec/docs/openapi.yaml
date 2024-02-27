@@ -97,7 +97,7 @@ paths:
                 type: boolean
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /paper:
+  '/paper/{paper-id}':
     get:
       summary: 論文詳細取得
       operationId: paper.get

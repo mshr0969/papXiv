@@ -14,7 +14,7 @@ paths:
     $ref: './paths/health.yaml#/health'
   /papers:
     $ref: './paths/paper.yaml#/papers'
-  /paper:
+  /paper/{paper-id}:
     $ref: './paths/paper.yaml#/paper'
   /search:
     $ref: './paths/search.yaml#/search'
