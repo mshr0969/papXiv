@@ -1,0 +1,25 @@
+health:
+  get:
+    summary: ヘルスチェック
+    operationId: health.get
+    description: |
+      ## 概要
+      ヘルスチェック
+    tags:
+      - ヘルスチェック
+    responses:
+      200:
+        description: ok
+        headers:
+          Access-Control-Allow-Origin:
+            schema:
+              type: string
+          Access-Control-Allow-Methods:
+            schema:
+              type: string
+          Access-Control-Allow-Headers:
+            schema:
+              type: string
+          Access-Control-Allow-Credentials:
+            schema:
+              type: boolean

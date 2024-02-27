@@ -1,0 +1,18 @@
+description: サーバーの不明なエラーの場合
+content:
+  application/problem+json:
+    schema:
+      $ref: '../openapi.yaml#/components/schemas/ProblemDetail'
+headers:
+  Access-Control-Allow-Origin:
+    schema:
+      type: string
+  Access-Control-Allow-Methods:
+    schema:
+      type: string
+  Access-Control-Allow-Headers:
+    schema:
+      type: string
+  Access-Control-Allow-Credentials:
+    schema:
+      type: boolean

@@ -1,0 +1,127 @@
+papers:
+  get:
+    summary: 論文一覧取得
+    operationId: papers.get
+    description: |
+      ## 概要
+      論文の一覧取得を行う
+    tags:
+      - 論文
+    responses:
+      200:
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../openapi.yaml#/components/schemas/PaperList'
+        headers:
+          Access-Control-Allow-Origin:
+            schema:
+              type: string
+          Access-Control-Allow-Methods:
+            schema:
+              type: string
+          Access-Control-Allow-Headers:
+            schema:
+              type: string
+          Access-Control-Allow-Credentials:
+            schema:
+              type: boolean
+      500:
+        $ref: '../openapi.yaml#/components/responses/InternalServerError'
+  post:
+    summary: 論文登録
+    operationId: papers.post
+    description: |
+      ## 概要
+      論文の登録を行う
+    tags:
+      - 論文
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../openapi.yaml#/components/schemas/PaperCreate'
+    responses:
+      201:
+        description: created
+        headers:
+          Access-Control-Allow-Origin:
+            schema:
+              type: string
+          Access-Control-Allow-Methods:
+            schema:
+              type: string
+          Access-Control-Allow-Headers:
+            schema:
+              type: string
+          Access-Control-Allow-Credentials:
+            schema:
+              type: boolean
+      500:
+        $ref: '../openapi.yaml#/components/responses/InternalServerError'
+paper:
+  get:
+    summary: 論文詳細取得
+    operationId: paper.get
+    description: |
+      ## 概要
+      論文の詳細取得を行う
+    tags:
+      - 論文
+    parameters:
+      - $ref: '../openapi.yaml#/components/parameters/paper-id'
+    responses:
+      200:
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../openapi.yaml#/components/schemas/PaperGet'
+        headers:
+          Access-Control-Allow-Origin:
+            schema:
+              type: string
+          Access-Control-Allow-Methods:
+            schema:
+              type: string
+          Access-Control-Allow-Headers:
+            schema:
+              type: string
+          Access-Control-Allow-Credentials:
+            schema:
+              type: boolean
+      404:
+        $ref: '../openapi.yaml#/components/responses/NotFound'
+      500:
+        $ref: '../openapi.yaml#/components/responses/InternalServerError'
+  delete:
+    summary: 論文削除
+    operationId: paper.delete
+    description: |
+      ## 概要
+      論文の削除を行う
+    tags:
+      - 論文
+    parameters:
+      - $ref: '../openapi.yaml#/components/parameters/paper-id'
+    responses:
+      204:
+        description: no content
+        headers:
+          Access-Control-Allow-Origin:
+            schema:
+              type: string
+          Access-Control-Allow-Methods:
+            schema:
+              type: string
+          Access-Control-Allow-Headers:
+            schema:
+              type: string
+          Access-Control-Allow-Credentials:
+            schema:
+              type: boolean
+      404:
+        $ref: '../openapi.yaml#/components/responses/NotFound'
+      500:
+        $ref: '../openapi.yaml#/components/responses/InternalServerError'

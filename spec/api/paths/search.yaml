@@ -1,0 +1,35 @@
+search:
+  get:
+    summary: 論文検索
+    operationId: search.get
+    description: |
+      ## 概要
+      論文の検索を行う
+    tags:
+      - 検索
+    parameters:
+      - $ref: '../openapi.yaml#/components/parameters/title'
+      - $ref: '../openapi.yaml#/components/parameters/author'
+      - $ref: '../openapi.yaml#/components/parameters/max_result'
+    responses:
+      200:
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../openapi.yaml#/components/schemas/SearchPaper'
+        headers:
+          Access-Control-Allow-Origin:
+            schema:
+              type: string
+          Access-Control-Allow-Methods:
+            schema:
+              type: string
+          Access-Control-Allow-Headers:
+            schema:
+              type: string
+          Access-Control-Allow-Credentials:
+            schema:
+              type: boolean
+      500:
+        $ref: '../openapi.yaml#/components/responses/InternalServerError'

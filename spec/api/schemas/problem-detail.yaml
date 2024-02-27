@@ -1,0 +1,37 @@
+any:
+  title: Problem Details JSON
+  description: |
+    エラー表現として、 [Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807) を用いる。
+    API クライアントでのエラーハンドリングの実装時は、 `type` を利用する。
+    リソース個別のエラー表現は、各API仕様に記載する。
+  type: object
+  properties:
+    type:
+      type: string
+      description: Problem の種別を一意に表現するURI
+      format: uri
+    status:
+      type: integer
+      description: HTTP ステータスコード
+    title:
+      type: string
+      description: Problem の `type` に対するヒューマンリーダブルな説明文
+    detail:
+      type: string
+      description: |
+        個別の Problem を説明するヒューマンリーダブルな文章。
+        通常、サーバーのエラー文を返す。
+    instance:
+      type: string
+      description: エラー発生箇所を示す URI 表現 (リクエストを処理したエンドポイントのURI)
+      format: uri
+    error_code:
+      type: string
+      description: Title のスネークケース表現。Extension Member.
+  required:
+    - type
+    - status
+    - title
+    - detail
+    - instance
+    - error_code

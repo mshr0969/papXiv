@@ -1,0 +1,48 @@
+version: '3.4'
+services:
+  base:
+    image: papxiv-openapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles:
+      - build
+  bundle:
+    image: papxiv-openapi
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run bundle
+    profiles:
+      - bundle
+  watch:
+    image: papxiv-openapi
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - SHELL=/bin/sh
+    command: npm run watch
+  doc:
+    image: papxiv-openapi
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - ${LOCAL_IP}:${LOCAL_DOC_PORT}:8080
+    command: npm run start -- -p 8080
+  mock:
+    image: stoplight/prism:4
+    volumes:
+      - ./docs:/tmp/:ro
+    networks:
+      - default
+      - papxiv_openapi_network
+    ports:
+      - ${LOCAL_IP}:${LOCAL_MOCK_PORT}:4010
+    command: mock -h 0.0.0.0 /tmp/openapi.yaml
+
+networks:
+  papxiv_openapi_network:
+    external:
+      true

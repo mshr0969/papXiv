@@ -1,0 +1,390 @@
+openapi: 3.0.1
+info:
+  title: papxiv
+  description: 論文管理システム
+  version: 0.0.0
+servers:
+  - url: 'http://localhost:{port}'
+    description: Local Mock Server
+    variables:
+      port:
+        default: '4010'
+paths:
+  /health:
+    get:
+      summary: ヘルスチェック
+      operationId: health.get
+      description: |
+        ## 概要
+        ヘルスチェック
+      tags:
+        - ヘルスチェック
+      responses:
+        '200':
+          description: ok
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+  /papers:
+    get:
+      summary: 論文一覧取得
+      operationId: papers.get
+      description: |
+        ## 概要
+        論文の一覧取得を行う
+      tags:
+        - 論文
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaperList'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: 論文登録
+      operationId: papers.post
+      description: |
+        ## 概要
+        論文の登録を行う
+      tags:
+        - 論文
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaperCreate'
+      responses:
+        '201':
+          description: created
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /paper:
+    get:
+      summary: 論文詳細取得
+      operationId: paper.get
+      description: |
+        ## 概要
+        論文の詳細取得を行う
+      tags:
+        - 論文
+      parameters:
+        - $ref: '#/components/parameters/paper-id'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaperGet'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: 論文削除
+      operationId: paper.delete
+      description: |
+        ## 概要
+        論文の削除を行う
+      tags:
+        - 論文
+      parameters:
+        - $ref: '#/components/parameters/paper-id'
+      responses:
+        '204':
+          description: no content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /search:
+    get:
+      summary: 論文検索
+      operationId: search.get
+      description: |
+        ## 概要
+        論文の検索を行う
+      tags:
+        - 検索
+      parameters:
+        - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/author'
+        - $ref: '#/components/parameters/max_result'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchPaper'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    ProblemDetail:
+      title: Problem Details JSON
+      description: |
+        エラー表現として、 [Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807) を用いる。
+        API クライアントでのエラーハンドリングの実装時は、 `type` を利用する。
+        リソース個別のエラー表現は、各API仕様に記載する。
+      type: object
+      properties:
+        type:
+          type: string
+          description: Problem の種別を一意に表現するURI
+          format: uri
+        status:
+          type: integer
+          description: HTTP ステータスコード
+        title:
+          type: string
+          description: Problem の `type` に対するヒューマンリーダブルな説明文
+        detail:
+          type: string
+          description: |
+            個別の Problem を説明するヒューマンリーダブルな文章。
+            通常、サーバーのエラー文を返す。
+        instance:
+          type: string
+          description: エラー発生箇所を示す URI 表現 (リクエストを処理したエンドポイントのURI)
+          format: uri
+        error_code:
+          type: string
+          description: Title のスネークケース表現。Extension Member.
+      required:
+        - type
+        - status
+        - title
+        - detail
+        - instance
+        - error_code
+    paperBase:
+      title: 論文基本情報
+      type: object
+      properties:
+        subject:
+          type: string
+        tag:
+          type: string
+        url:
+          type: string
+        published:
+          type: string
+      required:
+        - subject
+        - tag
+        - url
+        - published
+    paperItem:
+      title: 論文情報一覧取得アイテム
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+      required:
+        - id
+        - title
+    PaperGet:
+      title: 論文情報詳細取得
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/paperBase'
+        - type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+            created_at:
+              type: string
+            updated_at:
+              type: string
+          required:
+            - id
+            - title
+            - created_at
+            - updated_at
+    PaperList:
+      title: 論文情報一覧取得
+      type: object
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/paperItem'
+        total:
+          type: integer
+        has_next:
+          type: boolean
+      required:
+        - total
+        - has_next
+    PaperCreate:
+      title: 論文情報追加
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/paperBase'
+        - type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+          required:
+            - id
+            - title
+    SearchPaper:
+      title: 論文検索
+      type: object
+      properties:
+        papers:
+          type: array
+        total:
+          type: integer
+      required:
+        - total
+  parameters:
+    paper-id:
+      name: paper-id
+      in: path
+      required: true
+      schema:
+        type: string
+    title:
+      name: title
+      in: query
+      required: true
+      schema:
+        type: string
+    author:
+      name: author
+      in: query
+      required: false
+      schema:
+        type: string
+    max_result:
+      name: max_result
+      in: query
+      required: false
+      schema:
+        type: string
+        default: 10
+  responses:
+    NotFound:
+      description: 指定されたIDに対応するリソースがない場合
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Credentials:
+          schema:
+            type: boolean
+    InternalServerError:
+      description: サーバーの不明なエラーの場合
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
+        Access-Control-Allow-Credentials:
+          schema:
+            type: boolean

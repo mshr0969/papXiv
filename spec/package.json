@@ -1,0 +1,17 @@
+{
+    "name": "papxiv-openapi",
+    "version": "1.0.0",
+    "description": "papXiv で利用する API 仕様を OpenAPI に準拠し管理します。",
+    "main": "index.js",
+    "scripts": {
+      "start": "reload -b -d docs -e html,yaml",
+      "bundle": "swagger-cli bundle api/openapi.yaml -o docs/openapi.yaml -t yaml",
+      "watch": "chokidar \"api/**/*.yaml\" --command 'npm run bundle'"
+    },
+    "license": "MIT",
+    "devDependencies": {
+      "chokidar-cli": "^3.0.0",
+      "reload": "^3.2.0",
+      "swagger-cli": "^4.0.4"
+    }
+  }

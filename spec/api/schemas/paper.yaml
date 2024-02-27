@@ -1,0 +1,77 @@
+base:
+  title: 論文基本情報
+  type: object
+  properties:
+    subject:
+      type: string
+    tag:
+      type: string
+    url:
+      type: string
+    published:
+      type: string
+  required:
+    - subject
+    - tag
+    - url
+    - published
+get:
+  title: 論文情報詳細取得
+  type: object
+  allOf:
+    - $ref: '#/base'
+    - type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - id
+        - title
+        - created_at
+        - updated_at
+item:
+  title: 論文情報一覧取得アイテム
+  type: object
+  properties:
+    id:
+      type: string
+    title:
+      type: string
+  required:
+    - id
+    - title
+list:
+  title: 論文情報一覧取得
+  type: object
+  properties:
+    policies:
+      type: array
+      items:
+        $ref: '#/item'
+    total:
+      type: integer
+    has_next:
+      type: boolean
+  required:
+    - total
+    - has_next
+create:
+  title: 論文情報追加
+  type: object
+  allOf:
+    - $ref: "#/base"
+    - type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+      required:
+        - id
+        - title

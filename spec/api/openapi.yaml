@@ -1,0 +1,67 @@
+openapi: 3.0.1
+info:
+  title: papxiv
+  description: 論文管理システム
+  version: 0.0.0
+servers:
+  - url: 'http://localhost:{port}'
+    description: Local Mock Server
+    variables:
+      port:
+        default: '4010'
+paths:
+  /health:
+    $ref: './paths/health.yaml#/health'
+  /papers:
+    $ref: './paths/paper.yaml#/papers'
+  /paper:
+    $ref: './paths/paper.yaml#/paper'
+  /search:
+    $ref: './paths/search.yaml#/search'
+components:
+  schemas:
+    ProblemDetail:
+      $ref: './schemas/problem-detail.yaml#/any'
+    paperBase:
+      $ref: './schemas/paper.yaml#/base'
+    paperItem:
+      $ref: './schemas/paper.yaml#/item'
+    PaperGet:
+      $ref: './schemas/paper.yaml#/get'
+    PaperList:
+      $ref: './schemas/paper.yaml#/list'
+    PaperCreate:
+      $ref: './schemas/paper.yaml#/create'
+    SearchPaper:
+      $ref: './schemas/search.yaml#/get'
+  parameters:
+    paper-id:
+      name: paper-id
+      in: path
+      required: true
+      schema:
+        type: string
+    title:
+      name: title
+      in: query
+      required: true
+      schema:
+        type: string
+    author:
+      name: author
+      in: query
+      required: false
+      schema:
+        type: string
+    max_result:
+      name: max_result
+      in: query
+      required: false
+      schema:
+        type: string
+        default: 10
+  responses:
+    NotFound:
+      $ref: './responses/not-found.yaml'
+    InternalServerError:
+      $ref: './responses/internal-server-error.yaml'

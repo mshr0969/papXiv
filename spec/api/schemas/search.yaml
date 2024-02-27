@@ -1,0 +1,10 @@
+get:
+  title: 論文検索
+  type: object
+  properties:
+    papers:
+      type: array
+    total:
+      type: integer
+  required:
+    - total
