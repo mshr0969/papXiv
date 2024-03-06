@@ -242,15 +242,12 @@ components:
       properties:
         subject:
           type: string
-        tag:
-          type: string
         url:
           type: string
         published:
           type: string
       required:
         - subject
-        - tag
         - url
         - published
     paperItem:
