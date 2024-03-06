@@ -70,7 +70,14 @@ func (pr *PaperRepository) CreatePaper(ctx context.Context, do domain.Paper) err
 }
 
 func (pr *PaperRepository) ListPapers(ctx context.Context) (domain.Papers, error) {
-	return nil, nil
+	var papers domain.Papers
+
+	err := pr.db.SelectContext(ctx, &papers, "SELECT id, title FROM papers")
+	if err != nil {
+		return nil, err
+	}
+
+	return papers, nil
 }
 func (pr *PaperRepository) SelectPaper(ctx context.Context, paperID string) (*domain.Paper, error) {
 	return nil, nil

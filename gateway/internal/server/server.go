@@ -24,7 +24,9 @@ func (s *Server) PaperDelete(w http.ResponseWriter, r *http.Request, paperId han
 
 func (s *Server) PaperGet(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {}
 
-func (s *Server) PapersGet(w http.ResponseWriter, r *http.Request) {}
+func (s *Server) PapersGet(w http.ResponseWriter, r *http.Request) {
+	s.paper.ListPapers(w, r)
+}
 
 func (s *Server) PapersPost(w http.ResponseWriter, r *http.Request) {
 	s.paper.CreatePaper(w, r)

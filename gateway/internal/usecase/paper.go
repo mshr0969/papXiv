@@ -23,3 +23,11 @@ func (u *PaperUsecase) CreatePaper(ctx context.Context, do domain.Paper) error {
 	}
 	return nil
 }
+
+func (u *PaperUsecase) ListPapers(ctx context.Context) (domain.Papers, error) {
+	dos, err := u.pr.ListPapers(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error in u.pr.ListPapers; %w", err)
+	}
+	return dos ,nil
+}
