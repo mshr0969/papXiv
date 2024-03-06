@@ -5,7 +5,6 @@ type Paper struct {
 	Published string
 	Subject   string
 	Title     string
-	Tag       string
 	Url       string
 	CreatedAt string
 	UpdatedAt string

@@ -19,5 +19,5 @@ func (h *HealthHandler) GetHealth(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	resp := h.u.RespondHealth(ctx)
 
-	respondJSON(w,r,resp)
+	respondJSON(w, r, resp)
 }

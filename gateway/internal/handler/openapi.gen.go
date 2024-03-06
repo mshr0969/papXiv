@@ -23,7 +23,6 @@ type PaperCreate struct {
 	Id        string `json:"id"`
 	Published string `json:"published"`
 	Subject   string `json:"subject"`
-	Tag       string `json:"tag"`
 	Title     string `json:"title"`
 	Url       string `json:"url"`
 }
@@ -34,7 +33,6 @@ type PaperGet struct {
 	Id        string `json:"id"`
 	Published string `json:"published"`
 	Subject   string `json:"subject"`
-	Tag       string `json:"tag"`
 	Title     string `json:"title"`
 	UpdatedAt string `json:"updated_at"`
 	Url       string `json:"url"`
@@ -84,7 +82,6 @@ type SearchPaper struct {
 type PaperBase struct {
 	Published string `json:"published"`
 	Subject   string `json:"subject"`
-	Tag       string `json:"tag"`
 	Url       string `json:"url"`
 }
 
@@ -503,16 +500,16 @@ var swaggerSpec = []string{
 	"X4lrSpX2hUzZnlggDJoRWZ3erCxMSTyuSUEKEP8UuPFBU7x+Jf4l0EEak6wgHJAjRpiFlEGWo+32STRL",
 	"hVPS8UPx7O7LkM+C9nNogPiaBdVz7hTruJTV+5i5V0ApL02HWa9edFFZ2S4K7LmLRweF8uS8wLEPcaH8",
 	"+pV4zxC1so8YrYetwdE++AMpb0JZgKNaueOvVy//EMZPVxEkyYyk5nZaDiHe5gldyhAxu574ayS6sVp5",
-	"8ajycqH8YFWRqKAkAbAp7oVW3/+N0BPhBoQpahTt9rjkRkyDZlB4baY5JSO0bsPRk4Ur6EJNsBKjFukB",
-	"Y9qcK629Lq8+VYWqo4uyUsY+6YGrR93snvK8ZLg0bt+BSl6l+FDQlPufGo+sg4ZKG9pjxk2gg5uIULUq",
-	"2h/tjwpfsI0saBsgBv7QH+0fEKGELCO9j2QQNFlGPI6qg16z5nPntPKmW910RKlbFhQidDvc3eKex909",
-	"WQ9EOOWFJZ4SVCclimNjyx31q2i0XQH++exKIbdSNgvJuKhkYWFWO4EKxIWPJ4QQdSCMTNRaFHkVbhMx",
-	"1DWzCl7i4DP724eVDVHvH85xZyokuZI/LyqRelNTp8PNoDElUu+ciHN1CzLOtxtoYa12LT7rFoDzKkRh",
-	"Ia6HMlJvKeR18Ee127ovCGsbNcPR51cJjAAK1WuQyOs9eaOOruC1qSfGFH+cHsCiXdosJ2yv1MwL6ayc",
-	"sdn/H6utt/NWxNaJkh6n6tXR21zHe6CXdi5/p4dB2WE4A2EHEJ4qplqbH+0saGN6TCBVVt58mPt3bwgN",
-	"CYnqtIko+wanxk8XPn7XMt/+MeGr6EC7K37X7AxapwwtBYdOREXlrfVERKUuet3wpa7CH1Nh1W0jr/ec",
-	"6H/CO8bMwFe6T1q2g/f/M9L8HMhudBx8ZPsvEurGI1cr1DWn4nuchKZ2CSd/1pQKvwMQAxnG7FgkYooJ",
-	"GUxZbMLGhOXFrRcSA46YftcCE9b0pRecjw5EhYuJ/H8DAAD//yXA0taYHgAA",
+	"8ajycqH8YFWRqKAkAbAp7oVW3/+N0BPhBoQpahTt9rjkRkyDZlB4baY5JeNEYQmaWhOgpusBdW3ml9Ze",
+	"l1efqlLU0QlZC2Of9EjVozJ2T2peclgat+8xJa9SfCiIyP1PjSnWQUOlDe0x4ybQwU1EqFoV7Y/2R4Uv",
+	"2EYWtA0QA3/oj/YPiFBClpHeRzIImiwjHkfVUa5Z87lzWnnTrW46opgtC5IQuh3ubnHP4+6eZHwRTnkl",
+	"iacEmUmJ4mDYcgv9KhptV4B/Prs0yM2SzUIyLmpVWJhFouEoFYgLH08IIerIF5moNSHyKtwmYqhrZhW8",
+	"xNFm9rcPKxuioj+c485USHIlQ15UIvWmtk2Hs39jSqTeGxEn5xZknG830MJa7eJ71g8A51WIwkJcD2Wk",
+	"3jTI6+CPard1XxDWGGqGo8+vEhgBFKrXIJHXe/JGHV3Bi1FPjCn+OD2ARbs0Uk7YQKmZF9I7OWOz/z9W",
+	"W+/frYitEyU9TtWro7e5jvdAL+1c/k4Pg7KHcAbCDiA8VUy1tjfaWdDG9JhAqqy8+TD3794QGhIS1WkT",
+	"UfYNTo2fLnz8vmS+/XPBV9GBdlf8vtgZtE4ZWgoOnYiKynvpiYhKXeW64Utddj+mwqrbRl7vOdH/SHeM",
+	"mYHvcJ+0bAdv+Gek+TmQ3egp+Mj2XyTUjUeuVqhrTsX3OAlN7RJO/qwpFX4HIAYyjNmxSMQUEzKYstiE",
+	"jQnLi1svJAYcMf2+BCas6VsuOB8diAoXE/n/BgAA//+Ah59Yeh4AAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

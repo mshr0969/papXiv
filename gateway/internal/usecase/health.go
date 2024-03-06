@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-type HealthUsecase struct {}
+type HealthUsecase struct{}
 
 func NewHealthUsecase() *HealthUsecase {
 	return &HealthUsecase{}

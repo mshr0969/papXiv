@@ -64,3 +64,7 @@ func respondJSON(w http.ResponseWriter, r *http.Request, v interface{}) {
 		return
 	}
 }
+
+func respondCreated(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusCreated)
+}

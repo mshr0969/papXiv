@@ -6,10 +6,10 @@ import (
 )
 
 type Repositories struct {
-	Paper PaperRepository
+	Paper PaperRepositoryInterface
 }
 
-type PaperRepository interface {
+type PaperRepositoryInterface interface {
 	ListPapers(ctx context.Context) (domain.Papers, error)
 	SelectPaper(ctx context.Context, paperID string) (*domain.Paper, error)
 	CreatePaper(ctx context.Context, do domain.Paper) error
