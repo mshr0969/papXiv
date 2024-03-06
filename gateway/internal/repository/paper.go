@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"gateway/domain"
-	"log"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -38,7 +37,6 @@ func (pr *PaperRepository) CreatePaper(ctx context.Context, do domain.Paper) err
 
 	var subjectId int64
 	err = tx.GetContext(ctx, &subjectId, "SELECT id FROM subjects WHERE name = ?", do.Subject)
-	log.Printf(do.Title)
 	if err == sql.ErrNoRows {
 		result, err := tx.ExecContext(ctx, "INSERT INTO subjects (name) VALUES (?)", do.Subject)
 		if err != nil {
@@ -46,7 +44,6 @@ func (pr *PaperRepository) CreatePaper(ctx context.Context, do domain.Paper) err
 		}
 
 		subjectId, err = result.LastInsertId()
-		log.Printf("subjectId:%d", subjectId)
 		if err != nil {
 			return err
 		}
