@@ -291,11 +291,8 @@ components:
             $ref: '#/components/schemas/paperItem'
         total:
           type: integer
-        has_next:
-          type: boolean
       required:
         - total
-        - has_next
     PaperCreate:
       title: 論文情報追加
       type: object
