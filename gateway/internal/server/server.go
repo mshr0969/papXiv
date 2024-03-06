@@ -1,0 +1,31 @@
+package server
+
+import (
+	"gateway/handler"
+	"net/http"
+)
+
+type Server struct {
+	health *handler.HealthHandler
+	paper *handler.PaperHandler
+}
+
+func NewServer(h handler.Handlers) handler.ServerInterface {
+	return &Server{
+		health: h.Health,
+		paper: h.Paper,
+	}
+}
+func (s *Server) HealthGet(w http.ResponseWriter, r *http.Request) {
+	s.health.GetHealth(w,r)
+}
+
+func (s *Server) PaperDelete(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {}
+
+func (s *Server)PaperGet(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {}
+
+func (s *Server)PapersGet(w http.ResponseWriter, r *http.Request) {}
+
+func (s *Server)PapersPost(w http.ResponseWriter, r *http.Request) {}
+
+func (s *Server)SearchGet(w http.ResponseWriter, r *http.Request, params handler.SearchGetParams) {}
