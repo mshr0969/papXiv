@@ -29,5 +29,5 @@ func (u *PaperUsecase) ListPapers(ctx context.Context) (domain.Papers, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error in u.pr.ListPapers; %w", err)
 	}
-	return dos ,nil
+	return dos, nil
 }

@@ -53,7 +53,7 @@ func (h *PaperHandler) ListPapers(w http.ResponseWriter, r *http.Request) {
 
 func NewPaperItemFromDomain(do domain.Paper) PaperItem {
 	return PaperItem{
-		Id:         do.Id,
+		Id:    do.Id,
 		Title: do.Title,
 	}
 }
@@ -64,8 +64,8 @@ func NewPaperListFromDomains(dos domain.Papers, total int) PaperList {
 		rs = append(rs, NewPaperItemFromDomain(do))
 	}
 	return PaperList{
-		Total:   total,
-		Papers:   &rs,
+		Total:  total,
+		Papers: &rs,
 	}
 }
 

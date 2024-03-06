@@ -25,15 +25,15 @@ func (pr *PaperRepository) CreatePaper(ctx context.Context, do domain.Paper) err
 	}
 
 	defer func() {
-        if p := recover(); p != nil {
-            tx.Rollback()
-            panic(p)
-        } else if err != nil {
-            tx.Rollback()
-        } else {
-            err = tx.Commit()
-        }
-    }()
+		if p := recover(); p != nil {
+			tx.Rollback()
+			panic(p)
+		} else if err != nil {
+			tx.Rollback()
+		} else {
+			err = tx.Commit()
+		}
+	}()
 
 	var subjectId int64
 	err = tx.GetContext(ctx, &subjectId, "SELECT id FROM subjects WHERE name = ?", do.Subject)
@@ -57,11 +57,11 @@ func (pr *PaperRepository) CreatePaper(ctx context.Context, do domain.Paper) err
 		return err
 	}
 
-    _, err = tx.ExecContext(ctx, "INSERT INTO paper_subjects (paper_id, subject_id) VALUES (?, ?)",
-        do.Id, subjectId)
-    if err != nil {
-        return err
-    }
+	_, err = tx.ExecContext(ctx, "INSERT INTO paper_subjects (paper_id, subject_id) VALUES (?, ?)",
+		do.Id, subjectId)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

@@ -46,12 +46,12 @@ func main() {
 
 	u := usecase.Usecases{
 		Health: usecase.NewHealthUsecase(),
-		Paper: usecase.NewPaperUsecase(pr.Paper),
+		Paper:  usecase.NewPaperUsecase(pr.Paper),
 	}
 
 	h := handler.Handlers{
 		Health: handler.NewHealthHandler(u.Health),
-		Paper: handler.NewPaperHandler(u.Paper),
+		Paper:  handler.NewPaperHandler(u.Paper),
 	}
 
 	svr := server.NewServer(h)
