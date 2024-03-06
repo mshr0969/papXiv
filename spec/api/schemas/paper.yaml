@@ -50,7 +50,7 @@ list:
   title: 論文情報一覧取得
   type: object
   properties:
-    policies:
+    papers:
       type: array
       items:
         $ref: '#/item'

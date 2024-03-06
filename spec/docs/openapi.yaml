@@ -288,7 +288,7 @@ components:
       title: 論文情報一覧取得
       type: object
       properties:
-        policies:
+        papers:
           type: array
           items:
             $ref: '#/components/schemas/paperItem'
@@ -319,6 +319,14 @@ components:
       properties:
         papers:
           type: array
+          items:
+            title: 論文検索結果取得アイテム
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
         total:
           type: integer
       required:
@@ -347,7 +355,7 @@ components:
       in: query
       required: false
       schema:
-        type: string
+        type: integer
         default: 10
   responses:
     NotFound:

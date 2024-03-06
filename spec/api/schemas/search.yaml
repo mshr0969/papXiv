@@ -4,7 +4,17 @@ get:
   properties:
     papers:
       type: array
+      items:
+        $ref: '#/item'
     total:
       type: integer
   required:
     - total
+item:
+  title: 論文検索結果取得アイテム
+  type: object
+  properties:
+    title:
+      type: string
+    url:
+      type: string
