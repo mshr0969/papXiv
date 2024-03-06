@@ -31,3 +31,11 @@ func (u *PaperUsecase) ListPapers(ctx context.Context) (domain.Papers, error) {
 	}
 	return dos, nil
 }
+
+func (u *PaperUsecase) SelectPaper(ctx context.Context, paperId string) (*domain.Paper, error) {
+	do, err := u.pr.SelectPaper(ctx, paperId)
+	if err != nil {
+		return nil, fmt.Errorf("error in u.pr.SelectPaper: %w", err)
+	}
+	return do, nil
+}

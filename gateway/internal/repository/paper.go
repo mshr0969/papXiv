@@ -77,7 +77,30 @@ func (pr *PaperRepository) ListPapers(ctx context.Context) (domain.Papers, error
 	return papers, nil
 }
 func (pr *PaperRepository) SelectPaper(ctx context.Context, paperID string) (*domain.Paper, error) {
-	return nil, nil
+	var paper domain.Paper
+	err := pr.db.GetContext(ctx, &paper, "SELECT id, published, title, url, created_at, updated_at FROM papers WHERE id=?", paperID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, domain.ErrNonExistentPaper
+		}
+		return nil, err
+	}
+
+	var subjectId int64
+	err = pr.db.GetContext(ctx, &subjectId, "SELECT subject_id FROM paper_subjects WHERE paper_id=?", paperID)
+	if err != nil {
+		return nil, err
+	}
+
+	var subjectName string
+	err = pr.db.GetContext(ctx, &subjectName, "SELECT name FROM subjects WHERE id=?", subjectId)
+	if err != nil {
+		return nil, err
+	}
+
+	paper.Subject = subjectName
+
+	return &paper, nil
 }
 func (pr *PaperRepository) UpdatePaper(ctx context.Context, paperID string) error {
 	return nil

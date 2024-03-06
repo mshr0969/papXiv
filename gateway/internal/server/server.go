@@ -22,7 +22,9 @@ func (s *Server) HealthGet(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) PaperDelete(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {}
 
-func (s *Server) PaperGet(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {}
+func (s *Server) PaperGet(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {
+	s.paper.SelectPaper(w, r, paperId)
+}
 
 func (s *Server) PapersGet(w http.ResponseWriter, r *http.Request) {
 	s.paper.ListPapers(w, r)

@@ -51,6 +51,19 @@ func (h *PaperHandler) ListPapers(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, r, resp)
 }
 
+func (h *PaperHandler) SelectPaper(w http.ResponseWriter, r *http.Request, paperId string) {
+	ctx := r.Context()
+
+	do, err := h.u.SelectPaper(ctx, paperId)
+	if err != nil {
+		handle(w, r, err)
+		return
+	}
+
+	resp := NewPaperGetFromDomain(*do)
+	respondJSON(w, r, resp)
+}
+
 func NewPaperItemFromDomain(do domain.Paper) PaperItem {
 	return PaperItem{
 		Id:    do.Id,
@@ -76,5 +89,17 @@ func (r PaperCreate) toPaperDomain() domain.Paper {
 		Subject:   r.Subject,
 		Title:     r.Title,
 		Url:       r.Url,
+	}
+}
+
+func NewPaperGetFromDomain(do domain.Paper) PaperGet {
+	return PaperGet{
+		Id:        do.Id,
+		Published: do.Published,
+		Subject:   do.Subject,
+		Title:     do.Title,
+		Url:       do.Url,
+		CreatedAt: do.CreatedAt,
+		UpdatedAt: do.UpdatedAt,
 	}
 }
