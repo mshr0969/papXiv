@@ -106,5 +106,29 @@ func (pr *PaperRepository) UpdatePaper(ctx context.Context, paperID string) erro
 	return nil
 }
 func (pr *PaperRepository) DeletePaper(ctx context.Context, paperID string) error {
+	tx, err := pr.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if p := recover(); p != nil {
+			tx.Rollback()
+			panic(p)
+		} else if err != nil {
+			tx.Rollback()
+		} else {
+			err = tx.Commit()
+		}
+	}()
+
+	if _, err := tx.ExecContext(ctx, "DELETE FROM paper_subjects WHERE paper_id=?", paperID); err != nil {
+		return err
+	}
+
+	if _, err := tx.ExecContext(ctx, "DELETE FROM papers WHERE id=?", paperID); err != nil {
+		return err
+	}
+
 	return nil
 }

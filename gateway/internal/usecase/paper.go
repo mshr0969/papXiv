@@ -39,3 +39,10 @@ func (u *PaperUsecase) SelectPaper(ctx context.Context, paperId string) (*domain
 	}
 	return do, nil
 }
+
+func (u *PaperUsecase) DeletePaper(ctx context.Context, paperId string) error {
+	if err := u.pr.DeletePaper(ctx, paperId); err != nil {
+		return fmt.Errorf("error in u.pr.DeletePaper: %w", err)
+	}
+	return nil
+}

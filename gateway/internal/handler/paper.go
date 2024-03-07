@@ -64,6 +64,17 @@ func (h *PaperHandler) SelectPaper(w http.ResponseWriter, r *http.Request, paper
 	respondJSON(w, r, resp)
 }
 
+func (h *PaperHandler) DeletePaper(w http.ResponseWriter, r *http.Request, paperId string) {
+	ctx := r.Context()
+
+	if err := h.u.DeletePaper(ctx, paperId); err != nil {
+		handle(w, r, err)
+		return
+	}
+
+	respondNoContent(w, r)
+}
+
 func NewPaperItemFromDomain(do domain.Paper) PaperItem {
 	return PaperItem{
 		Id:    do.Id,
