@@ -9,6 +9,7 @@ import (
 	"gateway/usecase"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -62,5 +63,8 @@ func main() {
 	}
 	handler.HandlerFromMux(svr, router)
 
-	http.ListenAndServe(":8080", router)
+	if err = http.ListenAndServe(":8080", router); err != nil {
+		fmt.Printf("failed to terminate server: %v", err)
+		os.Exit(1)
+	}
 }
