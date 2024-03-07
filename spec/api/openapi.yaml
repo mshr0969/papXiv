@@ -32,6 +32,8 @@ components:
       $ref: './schemas/paper.yaml#/list'
     PaperCreate:
       $ref: './schemas/paper.yaml#/create'
+    PaperUpdate:
+      $ref: './schemas/paper.yaml#/update'
     SearchPaper:
       $ref: './schemas/search.yaml#/get'
   parameters:

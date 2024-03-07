@@ -55,6 +55,18 @@ list:
       type: integer
   required:
     - total
+update:
+  title: 論文情報更新
+  type: object
+  properties:
+    title:
+      type: string
+    subject:
+      type: string
+    published:
+      type: string
+    url:
+      type: string
 create:
   title: 論文情報追加
   type: object

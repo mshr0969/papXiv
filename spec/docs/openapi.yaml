@@ -132,6 +132,41 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: 論文情報更新
+      operationId: paper.put
+      description: |
+        ## 概要
+        論文の更新を行う
+      tags:
+        - 論文
+      parameters:
+        - $ref: '#/components/parameters/paper-id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaperUpdate'
+      responses:
+        '204':
+          description: no content
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     delete:
       summary: 論文削除
       operationId: paper.delete
@@ -307,6 +342,18 @@ components:
           required:
             - id
             - title
+    PaperUpdate:
+      title: 論文情報更新
+      type: object
+      properties:
+        title:
+          type: string
+        subject:
+          type: string
+        published:
+          type: string
+        url:
+          type: string
     SearchPaper:
       title: 論文検索
       type: object
