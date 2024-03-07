@@ -40,6 +40,13 @@ func (u *PaperUsecase) SelectPaper(ctx context.Context, paperId string) (*domain
 	return do, nil
 }
 
+func (u *PaperUsecase) UpdatePaper(ctx context.Context, do domain.Paper) error {
+	if err := u.pr.UpdatePaper(ctx, do); err != nil {
+		return fmt.Errorf("error in u.pr.UpdatePaper: %w", err)
+	}
+	return nil
+}
+
 func (u *PaperUsecase) DeletePaper(ctx context.Context, paperId string) error {
 	if err := u.pr.DeletePaper(ctx, paperId); err != nil {
 		return fmt.Errorf("error in u.pr.DeletePaper: %w", err)

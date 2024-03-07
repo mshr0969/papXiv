@@ -36,4 +36,8 @@ func (s *Server) PapersPost(w http.ResponseWriter, r *http.Request) {
 	s.paper.CreatePaper(w, r)
 }
 
+func (s *Server) PaperPut(w http.ResponseWriter, r *http.Request, paperId handler.PaperId) {
+	s.paper.UpdatePaper(w, r, paperId)
+}
+
 func (s *Server) SearchGet(w http.ResponseWriter, r *http.Request, params handler.SearchGetParams) {}

@@ -64,6 +64,23 @@ func (h *PaperHandler) SelectPaper(w http.ResponseWriter, r *http.Request, paper
 	respondJSON(w, r, resp)
 }
 
+func (h *PaperHandler) UpdatePaper(w http.ResponseWriter, r *http.Request, paperId string) {
+	ctx := r.Context()
+
+	var req PaperUpdate
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		handle(w, r, err)
+		return
+	}
+
+	do := req.toPaperDomain(paperId)
+
+	if err := h.u.UpdatePaper(ctx, do); err != nil {
+		handle(w, r, err)
+		return
+	}
+}
+
 func (h *PaperHandler) DeletePaper(w http.ResponseWriter, r *http.Request, paperId string) {
 	ctx := r.Context()
 
@@ -100,6 +117,32 @@ func (r PaperCreate) toPaperDomain() domain.Paper {
 		Subject:   r.Subject,
 		Title:     r.Title,
 		Url:       r.Url,
+	}
+}
+
+func (r PaperUpdate) toPaperDomain(paperId string) domain.Paper {
+	var published string
+	if r.Published != nil {
+		published = *r.Published
+	}
+	var subject string
+	if r.Subject != nil {
+		subject = *r.Subject
+	}
+	var title string
+	if r.Title != nil {
+		title = *r.Title
+	}
+	var url string
+	if r.Url != nil {
+		url = *r.Url
+	}
+	return domain.Paper{
+		Id: paperId,
+		Published: published,
+		Subject: subject,
+		Title: title,
+		Url: url,
 	}
 }
 

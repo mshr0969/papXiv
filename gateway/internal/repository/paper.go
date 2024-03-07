@@ -102,9 +102,54 @@ func (pr *PaperRepository) SelectPaper(ctx context.Context, paperID string) (*do
 
 	return &paper, nil
 }
-func (pr *PaperRepository) UpdatePaper(ctx context.Context, paperID string) error {
+
+func (pr *PaperRepository) UpdatePaper(ctx context.Context, do domain.Paper) error {
+	tx, err := pr.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if p := recover(); p != nil {
+			tx.Rollback()
+			panic(p)
+		} else if err != nil {
+			tx.Rollback()
+		} else {
+			err = tx.Commit()
+		}
+	}()
+
+	_, err = tx.ExecContext(ctx, "UPDATE papers SET title=?, published=?, url=? WHERE id=?", do.Title, do.Published, do.Url, do.Id)
+	if err != nil {
+		return err
+	}
+
+	var subjectId int64
+	err = tx.GetContext(ctx, &subjectId, "SELECT id FROM subjects WHERE name=?", do.Subject)
+	if err == sql.ErrNoRows {
+		result, err := tx.ExecContext(ctx, "INSERT INTO subjects (name) VALUES (?)", do.Subject)
+		if err != nil {
+			return err
+		}
+
+		subjectId, err = result.LastInsertId()
+		if err != nil {
+			return err
+		}
+	} else if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, "UPDATE paper_subjects SET subject_id=? WHERE paper_id=?",
+		subjectId, do.Id)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
+
 func (pr *PaperRepository) DeletePaper(ctx context.Context, paperID string) error {
 	tx, err := pr.db.BeginTxx(ctx, nil)
 	if err != nil {
