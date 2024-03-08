@@ -13,7 +13,7 @@ cd path/to/papXiv/gateway
 ### Start the Database (terminal 1)
 Dockerを使用してMySQLを起動する
 ```bash
-docker compose up
+meke up
 ```
 
 ### run Go API server (terminal 2)
@@ -30,6 +30,10 @@ curl -X POST -H "Content-Type: application/json" -d '{"subject":"physics", "url"
 ### 論文情報の詳細取得
 ```bash
 curl localhost:8080/paper/2d1423b3-15ff-498e-b978-241f2b87de9e
+```
+Response example:
+```
+{"created_at":"2024-03-08T23:35:02+09:00","id":"2d1423b3-15ff-498e-b978-241f2b87de9e","published":"2024/03/01","subject":"physics","title":"test title","updated_at":"2024-03-08T23:35:02+09:00","url":"https://arxiv.org/hogehoge"}%
 ```
 
 ### 全ての論文を取得
