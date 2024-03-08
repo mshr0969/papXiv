@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"gateway/domain"
+	"strings"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -120,7 +121,8 @@ func (pr *PaperRepository) UpdatePaper(ctx context.Context, do domain.Paper) err
 		}
 	}()
 
-	_, err = tx.ExecContext(ctx, "UPDATE papers SET title=?, published=?, url=? WHERE id=?", do.Title, do.Published, do.Url, do.Id)
+	query, args := createUpdateQuery(do)
+	_, err = tx.ExecContext(ctx, query, args...)
 	if err != nil {
 		return err
 	}
@@ -176,4 +178,27 @@ func (pr *PaperRepository) DeletePaper(ctx context.Context, paperID string) erro
 	}
 
 	return nil
+}
+
+func createUpdateQuery(do domain.Paper) (string, []interface{}) {
+    setParts := []string{}
+    args := []interface{}{}
+
+    if do.Title != "" {
+        setParts = append(setParts, "title = ?")
+        args = append(args, do.Title)
+    }
+    if do.Published != "" {
+        setParts = append(setParts, "published = ?")
+        args = append(args, do.Published)
+    }
+    if do.Url != "" {
+        setParts = append(setParts, "url = ?")
+        args = append(args, do.Url)
+    }
+
+    query := "UPDATE papers SET " + strings.Join(setParts, ", ") + " WHERE id = ?"
+    args = append(args, do.Id)
+
+    return query, args
 }
