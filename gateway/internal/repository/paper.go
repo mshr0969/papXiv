@@ -169,6 +169,15 @@ func (pr *PaperRepository) DeletePaper(ctx context.Context, paperID string) erro
 		}
 	}()
 
+	var exists bool
+	err = tx.GetContext(ctx, &exists, "SELECT EXISTS(SELECT 1 FROM papers WHERE id=?)", paperID)
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return domain.ErrNonExistentPaper
+	}
+
 	if _, err := tx.ExecContext(ctx, "DELETE FROM paper_subjects WHERE paper_id=?", paperID); err != nil {
 		return err
 	}
