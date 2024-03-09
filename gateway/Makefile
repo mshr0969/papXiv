@@ -18,3 +18,7 @@ down:
 docker-clean:
 	docker rm -f `docker ps -a -q`
 	docker volume rm `docker volume ls -q`
+
+.PHONY: test
+test:
+	cd internal && go test ./...
