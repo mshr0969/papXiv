@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"gateway/internal/db"
 	"gateway/internal/domain"
+	"gateway/internal/test/db"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
