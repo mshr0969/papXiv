@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"gateway/domain"
+	"gateway/internal/domain"
 	"log"
 	"net/http"
 )

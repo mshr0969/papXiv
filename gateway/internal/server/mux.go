@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
-	"gateway/handler"
+	"gateway/internal/handler"
 
 	middleware "github.com/deepmap/oapi-codegen/pkg/chi-middleware"
 	"github.com/getkin/kin-openapi/openapi3"

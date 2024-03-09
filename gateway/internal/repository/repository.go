@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"gateway/domain"
+	"gateway/internal/domain"
 )
 
 type Repositories struct {

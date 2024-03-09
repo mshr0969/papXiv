@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"gateway/domain"
+	"gateway/internal/domain"
 	"strings"
 
 	"github.com/jmoiron/sqlx"

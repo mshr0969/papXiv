@@ -1,7 +1,7 @@
 package server
 
 import (
-	"gateway/handler"
+	"gateway/internal/handler"
 	"net/http"
 )
 

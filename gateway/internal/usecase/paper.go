@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"gateway/domain"
-	"gateway/repository"
+	"gateway/internal/domain"
+	"gateway/internal/repository"
 )
 
 type PaperUsecase struct {

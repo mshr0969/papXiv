@@ -2,8 +2,8 @@ package handler
 
 import (
 	"encoding/json"
-	"gateway/domain"
-	"gateway/usecase"
+	"gateway/internal/domain"
+	"gateway/internal/usecase"
 	"net/http"
 )
 

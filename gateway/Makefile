@@ -1,6 +1,6 @@
 .PHONY: fmt
 fmt:
-	cd internal && go fmt ./...
+	go fmt ./...
 
 .PHONY: gen
 gen:
@@ -21,4 +21,4 @@ docker-clean:
 
 .PHONY: test
 test:
-	cd internal && go test ./...
+	go test ./...

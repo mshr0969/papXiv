@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"gateway/usecase"
+	"gateway/internal/usecase"
 	"net/http"
 )
 
