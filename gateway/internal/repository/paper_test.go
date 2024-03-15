@@ -206,3 +206,143 @@ func TestListPapers(t *testing.T) {
 		})
 	}
 }
+
+func TestSelectPaper(t *testing.T) {
+	t.Parallel()
+
+	type want struct {
+		err bool
+		res *domain.Paper
+	}
+
+	type args struct {
+		paperID string
+		existPapers *domain.Papers
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want want
+	}{
+		{
+			name: "successful select case",
+			args: args{
+				paperID: "2d1423b3-15ff-498e-b978-241f2b87de9e",
+				existPapers: &domain.Papers{
+					{
+						Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
+						Subject: "physics",
+						Title: "test title",
+						Url: "https://arxiv.org/hogehoge",
+						Published: "2024/01/01",
+					},
+					{
+						Id: "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
+						Subject: "mathematics",
+						Title: "test title2",
+						Url: "https://arxiv.org/hogehoge2",
+						Published: "2024/01/02",
+					},
+				},
+			},
+			want: want{
+				err: false,
+				res: &domain.Paper{
+					Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
+					Title: "test title",
+					Subject: "physics",
+					Url: "https://arxiv.org/hogehoge",
+					Published: "2024/01/01",
+				},
+			},
+		},
+		{
+			name: "not found case",
+			args: args{
+				paperID: "FA20022B-76D2-43F0-865F-BA45D6370D22",
+				existPapers: &domain.Papers{
+					{
+						Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
+						Subject: "physics",
+						Title: "test title",
+						Url: "https://arxiv.org/hogehoge",
+						Published: "2024/01/01",
+					},
+					{
+						Id: "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
+						Subject: "mathematics",
+						Title: "test title2",
+						Url: "https://arxiv.org/hogehoge2",
+						Published: "2024/01/02",
+					},
+				},
+			},
+			want: want{
+				err: true,
+				res: nil,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			resource, pool := db.CreateContainer()
+			defer db.CloseContainer(resource, pool)
+			db := db.ConnectDB(resource, pool)
+
+			pr := NewPaperRepository(db)
+
+			// データの準備
+			for _, paper := range *tt.args.existPapers {
+				_, err := db.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
+					paper.Id, paper.Title, paper.Published, paper.Url)
+				if err != nil {
+					t.Errorf("could not insert paper: %s", err)
+				}
+
+				_, err = db.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
+				if err != nil {
+					t.Errorf("could not insert subject: %s", err)
+				}
+
+				var subjectId int64
+				err = db.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
+				if err != nil {
+					t.Errorf("could not select subject_id: %s", err)
+				}
+
+				_, err = db.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
+				if err != nil {
+					t.Errorf("could not insert paper_subjects: %s", err)
+				}
+			}
+
+			ctx := context.Background()
+			paper, err := pr.SelectPaper(ctx, tt.args.paperID)
+
+			if diff := cmp.Diff(tt.want.err, err != nil); diff != "" {
+				t.Errorf("err mismatch (-want +got):\n%s", diff)
+			}
+
+			if tt.want.res != nil {
+				if paper.CreatedAt == ""{
+					t.Errorf("CreatedAt is zero")
+				}
+
+				if paper.UpdatedAt == ""{
+					t.Errorf("UpdatedAt is zero")
+				}
+				paper.CreatedAt = ""
+				paper.UpdatedAt = ""
+
+				if diff := cmp.Diff(tt.want.res, paper); diff != "" {
+					t.Errorf("paper mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
