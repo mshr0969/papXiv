@@ -66,7 +66,7 @@ func ConnectDB(resource *dockertest.Resource, pool *dockertest.Pool) *sqlx.DB {
 	}); err != nil {
 		log.Fatalf("failed to connect DB: %s", err)
 	}
-
+	db.SetConnMaxLifetime(time.Second)
 	return db
 }
 
