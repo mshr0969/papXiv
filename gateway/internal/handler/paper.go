@@ -8,10 +8,10 @@ import (
 )
 
 type PaperHandler struct {
-	u *usecase.PaperUsecase
+	u usecase.PaperUsecaseInterface
 }
 
-func NewPaperHandler(u *usecase.PaperUsecase) *PaperHandler {
+func NewPaperHandler(u usecase.PaperUsecaseInterface) *PaperHandler {
 	return &PaperHandler{
 		u: u,
 	}
