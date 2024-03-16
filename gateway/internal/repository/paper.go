@@ -121,7 +121,8 @@ func (pr *PaperRepository) UpdatePaper(ctx context.Context, do domain.Paper) err
 		}
 	}()
 
-	err = tx.GetContext(ctx, &do, "SELECT id, title, published, url FROM papers WHERE id=?", do.Id)
+	var existPaper domain.Paper
+	err = tx.GetContext(ctx, &existPaper, "SELECT id, title, published, url FROM papers WHERE id=?", do.Id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return domain.ErrNonExistentPaper
