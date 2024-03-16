@@ -138,11 +138,11 @@ func (r PaperUpdate) toPaperDomain(paperId string) domain.Paper {
 		url = *r.Url
 	}
 	return domain.Paper{
-		Id: paperId,
+		Id:        paperId,
 		Published: published,
-		Subject: subject,
-		Title: title,
-		Url: url,
+		Subject:   subject,
+		Title:     title,
+		Url:       url,
 	}
 }
 

@@ -190,24 +190,24 @@ func (pr *PaperRepository) DeletePaper(ctx context.Context, paperID string) erro
 }
 
 func createUpdateQuery(do domain.Paper) (string, []interface{}) {
-    setParts := []string{}
-    args := []interface{}{}
+	setParts := []string{}
+	args := []interface{}{}
 
-    if do.Title != "" {
-        setParts = append(setParts, "title = ?")
-        args = append(args, do.Title)
-    }
-    if do.Published != "" {
-        setParts = append(setParts, "published = ?")
-        args = append(args, do.Published)
-    }
-    if do.Url != "" {
-        setParts = append(setParts, "url = ?")
-        args = append(args, do.Url)
-    }
+	if do.Title != "" {
+		setParts = append(setParts, "title = ?")
+		args = append(args, do.Title)
+	}
+	if do.Published != "" {
+		setParts = append(setParts, "published = ?")
+		args = append(args, do.Published)
+	}
+	if do.Url != "" {
+		setParts = append(setParts, "url = ?")
+		args = append(args, do.Url)
+	}
 
-    query := "UPDATE papers SET " + strings.Join(setParts, ", ") + " WHERE id = ?"
-    args = append(args, do.Id)
+	query := "UPDATE papers SET " + strings.Join(setParts, ", ") + " WHERE id = ?"
+	args = append(args, do.Id)
 
-    return query, args
+	return query, args
 }

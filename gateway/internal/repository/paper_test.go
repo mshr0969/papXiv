@@ -9,7 +9,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCreatePaper(t *testing.T)  {
+func TestCreatePaper(t *testing.T) {
 	t.Parallel()
 
 	type args struct {
@@ -29,10 +29,10 @@ func TestCreatePaper(t *testing.T)  {
 			name: "successful create case",
 			args: args{
 				createPaper: &domain.Paper{
-					Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
-					Subject: "physics",
-					Title: "test title",
-					Url: "https://arxiv.org/hogehoge",
+					Id:        "2d1423b3-15ff-498e-b978-241f2b87de9e",
+					Subject:   "physics",
+					Title:     "test title",
+					Url:       "https://arxiv.org/hogehoge",
 					Published: "2024/01/01",
 				},
 			},
@@ -44,9 +44,9 @@ func TestCreatePaper(t *testing.T)  {
 			name: "invalid id case",
 			args: args{
 				createPaper: &domain.Paper{
-					Id: "2d1423b3-15ff-498e-b978-241f2b87de9e-hogehoge",
-					Subject: "physics",
-					Url: "https://arxiv.org/hogehoge",
+					Id:        "2d1423b3-15ff-498e-b978-241f2b87de9e-hogehoge",
+					Subject:   "physics",
+					Url:       "https://arxiv.org/hogehoge",
 					Published: "2024/01/01",
 				},
 			},
@@ -70,7 +70,7 @@ func TestCreatePaper(t *testing.T)  {
 			ctx := context.Background()
 			err := pr.CreatePaper(ctx, *tt.args.createPaper)
 
-			if diff := cmp.Diff(tt.want.err, err != nil); diff != ""{
+			if diff := cmp.Diff(tt.want.err, err != nil); diff != "" {
 				t.Errorf("err mismatch (-want +got):\n%s", diff)
 			}
 
@@ -95,7 +95,7 @@ func TestCreatePaper(t *testing.T)  {
 
 				paper.Subject = subjectName
 
-				if diff := cmp.Diff(tt.args.createPaper, &paper); diff != ""  {
+				if diff := cmp.Diff(tt.args.createPaper, &paper); diff != "" {
 					t.Errorf("paper mismatch (-want +got):\n%s", diff)
 				}
 			}
@@ -125,17 +125,17 @@ func TestListPapers(t *testing.T) {
 			args: args{
 				existPapers: domain.Papers{
 					{
-						Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
-						Subject: "physics",
-						Title: "test title",
-						Url: "https://arxiv.org/hogehoge",
+						Id:        "2d1423b3-15ff-498e-b978-241f2b87de9e",
+						Subject:   "physics",
+						Title:     "test title",
+						Url:       "https://arxiv.org/hogehoge",
 						Published: "2024/01/01",
 					},
 					{
-						Id: "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
-						Subject: "mathematics",
-						Title: "test title2",
-						Url: "https://arxiv.org/hogehoge2",
+						Id:        "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
+						Subject:   "mathematics",
+						Title:     "test title2",
+						Url:       "https://arxiv.org/hogehoge2",
 						Published: "2024/01/02",
 					},
 				},
@@ -144,11 +144,11 @@ func TestListPapers(t *testing.T) {
 				err: false,
 				res: domain.Papers{
 					{
-						Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
+						Id:    "2d1423b3-15ff-498e-b978-241f2b87de9e",
 						Title: "test title",
 					},
 					{
-						Id: "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
+						Id:    "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
 						Title: "test title2",
 					},
 				},
@@ -216,7 +216,7 @@ func TestSelectPaper(t *testing.T) {
 	}
 
 	type args struct {
-		paperID string
+		paperID     string
 		existPapers *domain.Papers
 	}
 
@@ -231,17 +231,17 @@ func TestSelectPaper(t *testing.T) {
 				paperID: "2d1423b3-15ff-498e-b978-241f2b87de9e",
 				existPapers: &domain.Papers{
 					{
-						Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
-						Subject: "physics",
-						Title: "test title",
-						Url: "https://arxiv.org/hogehoge",
+						Id:        "2d1423b3-15ff-498e-b978-241f2b87de9e",
+						Subject:   "physics",
+						Title:     "test title",
+						Url:       "https://arxiv.org/hogehoge",
 						Published: "2024/01/01",
 					},
 					{
-						Id: "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
-						Subject: "mathematics",
-						Title: "test title2",
-						Url: "https://arxiv.org/hogehoge2",
+						Id:        "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
+						Subject:   "mathematics",
+						Title:     "test title2",
+						Url:       "https://arxiv.org/hogehoge2",
 						Published: "2024/01/02",
 					},
 				},
@@ -249,10 +249,10 @@ func TestSelectPaper(t *testing.T) {
 			want: want{
 				err: false,
 				res: &domain.Paper{
-					Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
-					Title: "test title",
-					Subject: "physics",
-					Url: "https://arxiv.org/hogehoge",
+					Id:        "2d1423b3-15ff-498e-b978-241f2b87de9e",
+					Title:     "test title",
+					Subject:   "physics",
+					Url:       "https://arxiv.org/hogehoge",
 					Published: "2024/01/01",
 				},
 			},
@@ -263,17 +263,17 @@ func TestSelectPaper(t *testing.T) {
 				paperID: "FA20022B-76D2-43F0-865F-BA45D6370D22",
 				existPapers: &domain.Papers{
 					{
-						Id: "2d1423b3-15ff-498e-b978-241f2b87de9e",
-						Subject: "physics",
-						Title: "test title",
-						Url: "https://arxiv.org/hogehoge",
+						Id:        "2d1423b3-15ff-498e-b978-241f2b87de9e",
+						Subject:   "physics",
+						Title:     "test title",
+						Url:       "https://arxiv.org/hogehoge",
 						Published: "2024/01/01",
 					},
 					{
-						Id: "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
-						Subject: "mathematics",
-						Title: "test title2",
-						Url: "https://arxiv.org/hogehoge2",
+						Id:        "74459C44-3815-4DAE-BC5E-DC1F92407A1B",
+						Subject:   "mathematics",
+						Title:     "test title2",
+						Url:       "https://arxiv.org/hogehoge2",
 						Published: "2024/01/02",
 					},
 				},
@@ -329,11 +329,11 @@ func TestSelectPaper(t *testing.T) {
 			}
 
 			if tt.want.res != nil {
-				if paper.CreatedAt == ""{
+				if paper.CreatedAt == "" {
 					t.Errorf("CreatedAt is zero")
 				}
 
-				if paper.UpdatedAt == ""{
+				if paper.UpdatedAt == "" {
 					t.Errorf("UpdatedAt is zero")
 				}
 				paper.CreatedAt = ""
