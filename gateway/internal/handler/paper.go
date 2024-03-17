@@ -79,6 +79,8 @@ func (h *PaperHandler) UpdatePaper(w http.ResponseWriter, r *http.Request, paper
 		handle(w, r, err)
 		return
 	}
+
+	respondNoContent(w, r)
 }
 
 func (h *PaperHandler) DeletePaper(w http.ResponseWriter, r *http.Request, paperId string) {
