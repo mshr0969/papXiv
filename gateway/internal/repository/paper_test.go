@@ -63,9 +63,13 @@ func TestCreatePaper(t *testing.T) {
 
 			resource, pool := db.CreateContainer()
 			defer db.CloseContainer(resource, pool)
-			db := db.ConnectDB(resource, pool)
+			d := db.ConnectDB(resource, pool)
 
-			pr := NewPaperRepository(db)
+			if err := db.MigrateDB(d); err != nil {
+				t.Error("could not migrate")
+			}
+
+			pr := NewPaperRepository(d)
 
 			ctx := context.Background()
 			err := pr.CreatePaper(ctx, *tt.args.createPaper)
@@ -76,7 +80,7 @@ func TestCreatePaper(t *testing.T) {
 
 			if !tt.want.err {
 				var paper domain.Paper
-				err = db.Get(&paper, "SELECT id, published, title, url FROM papers WHERE id=?", tt.args.createPaper.Id)
+				err = d.Get(&paper, "SELECT id, published, title, url FROM papers WHERE id=?", tt.args.createPaper.Id)
 				if err != nil {
 					t.Errorf("could not select paper: %s", err)
 				}
@@ -163,31 +167,35 @@ func TestListPapers(t *testing.T) {
 
 			resource, pool := db.CreateContainer()
 			defer db.CloseContainer(resource, pool)
-			db := db.ConnectDB(resource, pool)
+			d := db.ConnectDB(resource, pool)
 
-			pr := NewPaperRepository(db)
+			if err := db.MigrateDB(d); err != nil {
+				t.Error("could not migrate")
+			}
+
+			pr := NewPaperRepository(d)
 
 			// データの準備
 			for _, paper := range tt.args.existPapers {
-				_, err := db.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
+				_, err := d.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
 					paper.Id, paper.Title, paper.Published, paper.Url)
 				if err != nil {
 					t.Errorf("could not insert paper: %s", err)
 				}
 
 				// ListPapersにおいては不要な処理
-				_, err = db.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
+				_, err = d.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
 				if err != nil {
 					t.Errorf("could not insert subject: %s", err)
 				}
 
 				var subjectId int64
-				err = db.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
+				err = d.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
 				if err != nil {
 					t.Errorf("could not select subject_id: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
+				_, err = d.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
 				if err != nil {
 					t.Errorf("could not insert paper_subjects: %s", err)
 				}
@@ -292,30 +300,34 @@ func TestSelectPaper(t *testing.T) {
 
 			resource, pool := db.CreateContainer()
 			defer db.CloseContainer(resource, pool)
-			db := db.ConnectDB(resource, pool)
+			d := db.ConnectDB(resource, pool)
 
-			pr := NewPaperRepository(db)
+			if err := db.MigrateDB(d); err != nil {
+				t.Error("could not migrate")
+			}
+
+			pr := NewPaperRepository(d)
 
 			// データの準備
 			for _, paper := range *tt.args.existPapers {
-				_, err := db.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
+				_, err := d.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
 					paper.Id, paper.Title, paper.Published, paper.Url)
 				if err != nil {
 					t.Errorf("could not insert paper: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
+				_, err = d.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
 				if err != nil {
 					t.Errorf("could not insert subject: %s", err)
 				}
 
 				var subjectId int64
-				err = db.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
+				err = d.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
 				if err != nil {
 					t.Errorf("could not select subject_id: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
+				_, err = d.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
 				if err != nil {
 					t.Errorf("could not insert paper_subjects: %s", err)
 				}
@@ -474,30 +486,34 @@ func TestUpdatePaper(t *testing.T) {
 
 			resource, pool := db.CreateContainer()
 			defer db.CloseContainer(resource, pool)
-			db := db.ConnectDB(resource, pool)
+			d := db.ConnectDB(resource, pool)
 
-			pr := NewPaperRepository(db)
+			if err := db.MigrateDB(d); err != nil {
+				t.Error("could not migrate")
+			}
+
+			pr := NewPaperRepository(d)
 
 			// データの準備
 			for _, paper := range *tt.args.existPapers {
-				_, err := db.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
+				_, err := d.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
 					paper.Id, paper.Title, paper.Published, paper.Url)
 				if err != nil {
 					t.Errorf("could not insert paper: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
+				_, err = d.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
 				if err != nil {
 					t.Errorf("could not insert subject: %s", err)
 				}
 
 				var subjectId int64
-				err = db.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
+				err = d.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
 				if err != nil {
 					t.Errorf("could not select subject_id: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
+				_, err = d.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
 				if err != nil {
 					t.Errorf("could not insert paper_subjects: %s", err)
 				}
@@ -512,7 +528,7 @@ func TestUpdatePaper(t *testing.T) {
 
 			if !tt.want.err {
 				var paper domain.Paper
-				err = db.Get(&paper, "SELECT id, published, title, url FROM papers WHERE id=?", tt.want.paper.Id)
+				err = d.Get(&paper, "SELECT id, published, title, url FROM papers WHERE id=?", tt.want.paper.Id)
 				if err != nil {
 					t.Errorf("could not select paper: %s", err)
 				}
@@ -640,30 +656,34 @@ func TestDeletePaper(t *testing.T) {
 
 			resource, pool := db.CreateContainer()
 			defer db.CloseContainer(resource, pool)
-			db := db.ConnectDB(resource, pool)
+			d := db.ConnectDB(resource, pool)
 
-			pr := NewPaperRepository(db)
+			if err := db.MigrateDB(d); err != nil {
+				t.Error("could not migrate")
+			}
+
+			pr := NewPaperRepository(d)
 
 			// データの準備
 			for _, paper := range *tt.args.existPapers {
-				_, err := db.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
+				_, err := d.Exec("INSERT INTO papers(id, title, published, url) VALUES (?, ?, ?, ?)",
 					paper.Id, paper.Title, paper.Published, paper.Url)
 				if err != nil {
 					t.Errorf("could not insert paper: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
+				_, err = d.Exec("INSERT INTO subjects(name) VALUES (?)", paper.Subject)
 				if err != nil {
 					t.Errorf("could not insert subject: %s", err)
 				}
 
 				var subjectId int64
-				err = db.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
+				err = d.Get(&subjectId, "SELECT id FROM subjects WHERE name=?", paper.Subject)
 				if err != nil {
 					t.Errorf("could not select subject_id: %s", err)
 				}
 
-				_, err = db.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
+				_, err = d.Exec("INSERT INTO paper_subjects(paper_id, subject_id) VALUES (?, ?)", paper.Id, subjectId)
 				if err != nil {
 					t.Errorf("could not insert paper_subjects: %s", err)
 				}
@@ -678,7 +698,7 @@ func TestDeletePaper(t *testing.T) {
 
 			if !tt.want.err {
 				var paper domain.Paper
-				err = db.Get(&paper, "SELECT id, published, title, url FROM papers WHERE id=?", tt.args.paperId)
+				err = d.Get(&paper, "SELECT id, published, title, url FROM papers WHERE id=?", tt.args.paperId)
 				if err == nil {
 					t.Errorf("could select paper: %s", err)
 				}
