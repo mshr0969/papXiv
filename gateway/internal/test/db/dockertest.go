@@ -11,11 +11,10 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	"github.com/pkg/errors"
+	migrate "github.com/rubenv/sql-migrate"
 )
 
 func CreateContainer() (*dockertest.Resource, *dockertest.Pool) {
-	pwd, _ := os.Getwd()
-
 	pool, err := dockertest.NewPool("")
 	pool.MaxWait = 2 * time.Minute
 	if err != nil {
@@ -31,9 +30,6 @@ func CreateContainer() (*dockertest.Resource, *dockertest.Pool) {
 			"MYSQL_PASSWORD=passw0rd",
 			"MYSQL_ROOT_PASSWORD=passw0rd",
 			"TZ=Asia/Tokyo",
-		},
-		Mounts: []string{
-			pwd + "../../../ddl:/docker-entrypoint-initdb.d",
 		},
 	}
 
@@ -74,4 +70,19 @@ func CloseContainer(resource *dockertest.Resource, pool *dockertest.Pool) {
 	if err := pool.Purge(resource); err != nil {
 		log.Fatalf("could not purge resource: %s", err)
 	}
+}
+
+func MigrateDB(db *sqlx.DB) error {
+	pwd, _ := os.Getwd()
+
+	migrations := &migrate.FileMigrationSource{
+		Dir: pwd + "../../../configs/migrations",
+	}
+
+	_, err := migrate.Exec(db.DB, "mysql", migrations, migrate.Up)
+	if err != nil {
+		return errors.Wrap(err, "Could not migrate")
+	}
+
+	return nil
 }
