@@ -8,7 +8,9 @@ gen:
 
 .PHONY: up
 up:
-	docker compose up
+	docker compose up -d
+	sleep 20
+	make migrate-up
 
 .PHONY: down
 down:
@@ -22,3 +24,21 @@ docker-clean:
 .PHONY: test
 test:
 	go test ./...
+
+MIGRATE_OPT_DEV ?= -env development -config ./configs/migrations/config/dbconfig.yml
+
+.PHONY: migrate-new
+migrate-new:
+	set -a; source .env.local; set +a; sql-migrate new $(MIGRATE_OPT_DEV) ${NAME}
+
+.PHONY: migrate-up
+migrate-up:
+	set -a; source .env.local; set +a; sql-migrate up $(MIGRATE_OPT_DEV)
+
+.PHONY: migrate-status
+migrate-status:
+	set -a; source .env.local; set +a; sql-migrate status $(MIGRATE_OPT_DEV)
+
+.PHONY: migrate-down
+migrate-down:
+	set -a; source .env.local; set +a; sql-migrate down $(MIGRATE_OPT_DEV)

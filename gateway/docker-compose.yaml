@@ -7,5 +7,3 @@ services:
       - .env.local
     ports:
       - "3306:3306"
-    volumes:
-      - ./ddl:/docker-entrypoint-initdb.d
