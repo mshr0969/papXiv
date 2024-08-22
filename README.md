@@ -2,8 +2,14 @@
 Paper Management System based on arXiv
 
 ## feature
-- arXiv APIを用いて論文を検索できる(TODO)
-- 論文の情報のCRUD操作
+- OpenAPIを用いたスキーマ駆動開発 
+  - スキーマからGoコードを生成(`spec/docs/openapi.yaml -> internal/handler/openapi.gen.go`)
+- レイヤードアーキテクチャ(domain, repository, usecase, handler)
+  - レイヤーごとのインターフェースを定義し、依存性を分離
+  - DIによる依存性注入
+- テスト
+  - repository: dockertestを用いたMySQLのテスト
+  - handler: usecaseのモックを用いたテスト
 
 ## Preparation
 ```bash
